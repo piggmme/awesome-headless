@@ -1,9 +1,10 @@
 {
   "name": "awesome-headless",
-  "private": true,
-  "version": "0.0.0",
+  "private": false,
+  "version": "0.0.2",
   "type": "module",
-  "main": "dist/main.js",
+  "main": "dist/awesome-headless.js",
+  "repository": "https://github.com/piggmme/awesome-headless",
   "types": "dist/main.d.ts",
   "files": [
     "dist"
