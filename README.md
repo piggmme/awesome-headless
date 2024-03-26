@@ -1,4 +1,4 @@
-# Awsome-headless
+# awesome-headless
 
 Unstyled React Headless UI Components.
 
