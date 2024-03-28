@@ -1,4 +1,4 @@
-import { ElementType, ForwardRefExoticComponent, forwardRef, useContext, useEffect } from "react";
+import { ElementType, ForwardRefExoticComponent, forwardRef, useContext, useEffect, useRef, useState } from "react";
 import { createPortal } from "react-dom";
 import { PolymorphicProps, buttonEl, divEl, h1El } from "../../utils/type";
 import { DialogContext, DialogContextType } from "./useDialog";
@@ -63,22 +63,55 @@ type DialogMainProps<E extends ElementType = typeof divEl> =
 function DialogMain<T extends ElementType = typeof divEl>(
   { as, context, children, ...props }: DialogMainProps<T>,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
-  ref: any,
+  forwardDialogRef: any,
 ) {
   const Component = as ?? divEl;
+  const [focusableElements, setFocusableElements] = useState<HTMLElement[]>([]);
+  const dialogRef = useRef<HTMLElement>(null);
+  const ref = forwardDialogRef || dialogRef;
+
   useEffect(() => {
-    ref?.current.focus();
-  }, []);
+    if (context.isOpen) ref?.current?.focus();
+  }, [ref, context.isOpen]);
+
+  useEffect(() => {
+    if (context.isOpen && ref?.current) {
+      const elements = Array.from(
+        ref.current.querySelectorAll('button, [href], input, select, textarea, [tabindex]:not([tabindex="-1"])')
+        ) as HTMLElement[];
+      setFocusableElements(elements);
+    }
+  }, [context.isOpen, ref]);
+
+  const handleFocusing = (e: KeyboardEvent) => {
+    if (focusableElements.length === 0) return; // 포커스 가능한 요소가 없으면 종료
+    const currentIndex = focusableElements.indexOf(document.activeElement as HTMLElement)
+    if (currentIndex === -1) return; // 현재 포커스 요소가 배열에 없으면 종료
+
+    let nextIndex;
+    if (e.shiftKey) {
+      // 역방향 탭
+      nextIndex = currentIndex === 0 ? focusableElements.length - 1 : currentIndex - 1;
+    } else {
+      // 순방향 탭
+      nextIndex = currentIndex === focusableElements.length - 1 ? 0 : currentIndex + 1;
+    }
+
+    focusableElements[nextIndex].focus();
+    e.preventDefault();
+  }
 
   if (!context.isOpen) return null;
 
   return createPortal(
     <Keyboard.Escape then={context.close}>
-      <DialogContext.Provider value={context}>
-        <Component {...props} ref={ref} tabIndex={-1}>
-          {children}
-        </Component>
-      </DialogContext.Provider>
+      <Keyboard.Tab then={handleFocusing}>
+        <DialogContext.Provider value={context}>
+          <Component {...props} ref={ref} tabIndex={-1}>
+            {children}
+          </Component>
+        </DialogContext.Provider>
+      </Keyboard.Tab>
     </Keyboard.Escape>,
     document.body
   );
