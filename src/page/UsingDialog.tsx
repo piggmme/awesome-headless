@@ -32,6 +32,18 @@ export default function UsingDialog() {
           close button
         </Dialog.Button>
         <Dialog.Button
+          style={{border: '1px sold gray', background: 'white'}}
+          closed
+        >
+          close button2
+        </Dialog.Button>
+        <Dialog.Button
+          style={{border: '1px sold gray', background: 'white'}}
+          closed
+        >
+          close button3
+        </Dialog.Button>
+        <Dialog.Button
           as="a"
           onClick={dialog.close}
         >
