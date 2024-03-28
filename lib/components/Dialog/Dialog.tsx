@@ -1,7 +1,7 @@
-import { ElementType, ForwardRefExoticComponent, forwardRef, useEffect } from "react";
+import { ElementType, ForwardRefExoticComponent, forwardRef, useContext, useEffect } from "react";
 import { createPortal } from "react-dom";
 import { PolymorphicProps, buttonEl, divEl, h1El } from "../../utils/type";
-import useDialog from "./useDialog";
+import { DialogContext, DialogContextType } from "./useDialog";
 import Keyboard from "../Keyboard/Keyboard";
 
 /************ Title ************/
@@ -28,38 +28,57 @@ function DialogContents({
 
 /************ Button ************/
 type DialogButtonProps<E extends ElementType = typeof buttonEl> =
-  PolymorphicProps<E>
+  PolymorphicProps<E> & {
+    closed?: boolean;
+  }
 function DialogButton<T extends ElementType = typeof buttonEl>({
   as,
   children,
+  onClick,
+  closed,
   ...props
 }: DialogButtonProps<T>){
   const Component = as ?? buttonEl;
-  return <Component {...props}>{children}</Component>
+  const dialog = useContext(DialogContext);
+
+  return (
+    <Component
+      onClick={(e) => {
+        onClick?.(e);
+        if (closed) dialog?.close();
+      }}
+      {...props}
+    >
+      {children}
+    </Component>
+  )
 }
 
 /************ Main ************/
 type DialogMainProps<E extends ElementType = typeof divEl> =
-  PolymorphicProps<E> & ReturnType<typeof useDialog>
+  PolymorphicProps<E> & {
+    context: DialogContextType;
+  }
 
 function DialogMain<T extends ElementType = typeof divEl>(
-  { as, isOpen, open, close, children, ...props }: DialogMainProps<T>,
+  { as, context, children, ...props }: DialogMainProps<T>,
   // eslint-disable-next-line @typescript-eslint/no-explicit-any
   ref: any,
 ) {
   const Component = as ?? divEl;
-
   useEffect(() => {
     ref?.current.focus();
   }, []);
 
-  if (!isOpen) return null;
+  if (!context.isOpen) return null;
 
   return createPortal(
-    <Keyboard.Escape then={close}>
-      <Component {...props} ref={ref} tabIndex={-1}>
-        {children}
-      </Component>
+    <Keyboard.Escape then={context.close}>
+      <DialogContext.Provider value={context}>
+        <Component {...props} ref={ref} tabIndex={-1}>
+          {children}
+        </Component>
+      </DialogContext.Provider>
     </Keyboard.Escape>,
     document.body
   );
@@ -72,8 +91,9 @@ export const Dialog = Object.assign(ForwardedDialogMain, {
   Title: DialogTitle,
   Contents: DialogContents,
   Button: DialogButton,
-  use: useDialog,
 });
+
+export { default as useDialog } from './useDialog';
 
 export type {
   DialogMainProps,

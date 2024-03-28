@@ -1,15 +1,16 @@
-import { Dialog } from "../../lib/components/Dialog/Dialog"
+import { Dialog, useDialog } from "../../lib/components/Dialog/Dialog"
 
 export default function UsingDialog() {
-  const { isOpen, open, close } = Dialog.use()
+  const dialog = useDialog()
+
   return (
     <section>
       <h1>Using Dialog</h1>
-      <button onClick={open}>trigger</button>
+      <button onClick={dialog.open}>trigger</button>
       <Dialog
         style={{border: '1px solid black', background: 'pink', padding: '10px'}}
         className="dialog"
-        isOpen={isOpen}
+        context={dialog}
       >
 
         <Dialog.Title>h1 - default</Dialog.Title>
@@ -25,19 +26,19 @@ export default function UsingDialog() {
 
         <Dialog.Button
           style={{border: '1px sold gray', background: 'white'}}
-          onClick={close}
+          closed
         >
           close button
         </Dialog.Button>
         <Dialog.Button
           as="a"
-          onClick={close}
+          onClick={dialog.close}
         >
           close a link
         </Dialog.Button>
         <Dialog.Button
           as="div"
-          onClick={close}
+          onClick={dialog.close}
         >
           close div
         </Dialog.Button>
