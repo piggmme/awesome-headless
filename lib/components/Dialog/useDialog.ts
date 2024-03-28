@@ -1,23 +1,22 @@
-import { createContext, useContext, useState } from "react";
+import {createContext, useContext, useState} from 'react'
 
 export type DialogContextType = {
-  isOpen: boolean;
-  open: () => void;
-  close: () => void;
-};
+  isOpen: boolean
+  open: () => void
+  close: () => void
+}
 
-export const DialogContext = createContext<DialogContextType | null>(null);
+export const DialogContext = createContext<DialogContextType | null>(null)
 
 export const useDialogContext = () => {
-  const context = useContext(DialogContext);
+  const context = useContext(DialogContext)
   if (!context) {
-    throw new Error("Components must be used within a <Dialog/>");
+    throw new Error('Components must be used within a <Dialog/>')
   }
-  return context;
-};
+  return context
+}
 
-
-export default function useDialog () {
+export default function useDialog() {
   const [isOpen, setIsOpen] = useState(false)
 
   const open = () => setIsOpen(true)
@@ -26,6 +25,6 @@ export default function useDialog () {
   return {
     isOpen,
     open,
-    close
+    close,
   }
 }
