@@ -1,7 +1,7 @@
 {
   "name": "awesome-headless",
   "private": false,
-  "version": "0.0.2",
+  "version": "0.0.3",
   "type": "module",
   "main": "dist/awesome-headless.js",
   "repository": "https://github.com/piggmme/awesome-headless",
