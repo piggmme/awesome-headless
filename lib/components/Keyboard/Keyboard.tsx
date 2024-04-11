@@ -1,75 +1,158 @@
-import {useEffect} from 'react'
+import React, {useEffect, useRef} from 'react'
+
+function Enter({
+  then,
+  children,
+}: {
+  then?: (e: KeyboardEvent) => void
+  children?: React.ReactNode
+}) {
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleEnter = (e: KeyboardEvent) => {
+      if (e.key === 'Enter') {
+        then?.(e)
+      }
+    }
+
+    const container = containerRef.current
+    if (container) {
+      container.addEventListener('keydown', handleEnter)
+    }
+
+    return () => {
+      if (container) {
+        container.removeEventListener('keydown', handleEnter)
+      }
+    }
+  }, [then])
+
+  return <div ref={containerRef}>{children}</div>
+}
+
+function Space({
+  then,
+  children,
+}: {
+  then?: (e: KeyboardEvent) => void
+  children?: React.ReactNode
+}) {
+  const containerRef = useRef<HTMLDivElement>(null)
+
+  useEffect(() => {
+    const handleSpace = (e: KeyboardEvent) => {
+      if (e.code === 'Space') {
+        then?.(e)
+      }
+    }
+
+    const container = containerRef.current
+    if (container) {
+      container.addEventListener('keydown', handleSpace)
+    }
+
+    return () => {
+      if (container) {
+        container.removeEventListener('keydown', handleSpace)
+      }
+    }
+  }, [then])
+
+  return <div ref={containerRef}>{children}</div>
+}
 
 function Escape({
   then,
   children,
 }: {
-  then?: (e?: KeyboardEvent) => void
+  then?: (e: KeyboardEvent) => void
   children?: React.ReactNode
 }) {
+  const containerRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
     const handleEscape = (e: KeyboardEvent) => {
       if (e.key === 'Escape') {
-        console.log('Escape key pressed')
         then?.(e)
       }
     }
 
-    document.addEventListener('keydown', handleEscape)
+    const container = containerRef.current
+    if (container) {
+      container.addEventListener('keydown', handleEscape)
+    }
+
     return () => {
-      document.removeEventListener('keydown', handleEscape)
+      if (container) {
+        container.removeEventListener('keydown', handleEscape)
+      }
     }
   }, [then])
 
-  return <>{children}</>
+  return <div ref={containerRef}>{children}</div>
 }
 
 function ArrowDown({
   then,
   children,
 }: {
-  then?: (e?: KeyboardEvent) => void
+  then?: (e: KeyboardEvent) => void
   children?: React.ReactNode
 }) {
+  const containerRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
+    const handleArrowDown = (e: KeyboardEvent) => {
       if (e.key === 'ArrowDown') {
-        console.log('ArrowDown key pressed')
         then?.(e)
       }
     }
 
-    document.addEventListener('keydown', handleEscape)
+    const container = containerRef.current
+    if (container) {
+      container.addEventListener('keydown', handleArrowDown)
+    }
+
     return () => {
-      document.removeEventListener('keydown', handleEscape)
+      if (container) {
+        container.removeEventListener('keydown', handleArrowDown)
+      }
     }
   }, [then])
 
-  return <>{children}</>
+  return <div ref={containerRef}>{children}</div>
 }
 
 function ArrowUp({
   then,
   children,
 }: {
-  then?: (e?: KeyboardEvent) => void
+  then?: (e: KeyboardEvent) => void
   children?: React.ReactNode
 }) {
+  const containerRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
+    const handleArrowUp = (e: KeyboardEvent) => {
       if (e.key === 'ArrowUp') {
-        console.log('ArrowUp key pressed')
         then?.(e)
       }
     }
 
-    document.addEventListener('keydown', handleEscape)
+    const container = containerRef.current
+    if (container) {
+      container.addEventListener('keydown', handleArrowUp)
+    }
+
     return () => {
-      document.removeEventListener('keydown', handleEscape)
+      if (container) {
+        container.removeEventListener('keydown', handleArrowUp)
+      }
     }
   }, [then])
 
-  return <>{children}</>
+  return <div ref={containerRef}>{children}</div>
 }
 
 function Tab({
@@ -79,23 +162,30 @@ function Tab({
   then?: (e: KeyboardEvent) => void
   children?: React.ReactNode
 }) {
+  const containerRef = useRef<HTMLDivElement>(null)
+
   useEffect(() => {
-    const handleEscape = (e: KeyboardEvent) => {
+    const handleTab = (e: KeyboardEvent) => {
       if (e.key === 'Tab') {
-        console.log('Tab key pressed')
         then?.(e)
       }
     }
 
-    document.addEventListener('keydown', handleEscape)
+    const container = containerRef.current
+    if (container) {
+      container.addEventListener('keydown', handleTab)
+    }
+
     return () => {
-      document.removeEventListener('keydown', handleEscape)
+      if (container) {
+        container.removeEventListener('keydown', handleTab)
+      }
     }
   }, [then])
 
-  return <>{children}</>
+  return <div ref={containerRef}>{children}</div>
 }
 
-const Keyboard = {Escape, ArrowDown, ArrowUp, Tab}
+const Keyboard = {Escape, ArrowDown, ArrowUp, Tab, Enter, Space}
 
 export default Keyboard
