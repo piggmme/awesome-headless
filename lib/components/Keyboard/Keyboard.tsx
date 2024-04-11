@@ -1,4 +1,4 @@
-import React, {useEffect, useRef} from 'react'
+import React, {forwardRef, useEffect, useRef} from 'react'
 
 function Enter({
   then,
@@ -62,13 +62,13 @@ function Space({
   return <div ref={containerRef}>{children}</div>
 }
 
-function Escape({
-  then,
-  children,
-}: {
-  then?: (e: KeyboardEvent) => void
-  children?: React.ReactNode
-}) {
+const Escape = forwardRef<
+  HTMLElement,
+  {
+    then?: (e: KeyboardEvent) => void
+    children?: React.ReactNode
+  }
+>(function Escape({then, children}, ref) {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -78,7 +78,8 @@ function Escape({
       }
     }
 
-    const container = containerRef.current
+    const container =
+      (ref && typeof ref !== 'function' && ref.current) || containerRef.current
     if (container) {
       container.addEventListener('keydown', handleEscape)
     }
@@ -88,10 +89,12 @@ function Escape({
         container.removeEventListener('keydown', handleEscape)
       }
     }
-  }, [then])
+  }, [then, ref])
+
+  if (ref && typeof ref !== 'function' && ref.current) return <>{children}</>
 
   return <div ref={containerRef}>{children}</div>
-}
+})
 
 function ArrowDown({
   then,
