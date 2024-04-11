@@ -1,12 +1,12 @@
 import React, {forwardRef, useEffect, useRef} from 'react'
 
-function Enter({
-  then,
-  children,
-}: {
-  then?: (e: KeyboardEvent) => void
-  children?: React.ReactNode
-}) {
+const Enter = forwardRef<
+  HTMLElement,
+  {
+    then?: (e: KeyboardEvent) => void
+    children?: React.ReactNode
+  }
+>(function Enter({then, children}, ref) {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -16,7 +16,8 @@ function Enter({
       }
     }
 
-    const container = containerRef.current
+    const container =
+      (ref && typeof ref !== 'function' && ref.current) || containerRef.current
     if (container) {
       container.addEventListener('keydown', handleEnter)
     }
@@ -26,18 +27,20 @@ function Enter({
         container.removeEventListener('keydown', handleEnter)
       }
     }
-  }, [then])
+  }, [then, ref])
+
+  if (ref && typeof ref !== 'function' && ref.current) return <>{children}</>
 
   return <div ref={containerRef}>{children}</div>
-}
+})
 
-function Space({
-  then,
-  children,
-}: {
-  then?: (e: KeyboardEvent) => void
-  children?: React.ReactNode
-}) {
+const Space = forwardRef<
+  HTMLElement,
+  {
+    then?: (e: KeyboardEvent) => void
+    children?: React.ReactNode
+  }
+>(function Space({then, children}, ref) {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -47,7 +50,8 @@ function Space({
       }
     }
 
-    const container = containerRef.current
+    const container =
+      (ref && typeof ref !== 'function' && ref.current) || containerRef.current
     if (container) {
       container.addEventListener('keydown', handleSpace)
     }
@@ -57,10 +61,12 @@ function Space({
         container.removeEventListener('keydown', handleSpace)
       }
     }
-  }, [then])
+  }, [then, ref])
+
+  if (ref && typeof ref !== 'function' && ref.current) return <>{children}</>
 
   return <div ref={containerRef}>{children}</div>
-}
+})
 
 const Escape = forwardRef<
   HTMLElement,
@@ -96,13 +102,13 @@ const Escape = forwardRef<
   return <div ref={containerRef}>{children}</div>
 })
 
-function ArrowDown({
-  then,
-  children,
-}: {
-  then?: (e: KeyboardEvent) => void
-  children?: React.ReactNode
-}) {
+const ArrowDown = forwardRef<
+  HTMLElement,
+  {
+    then?: (e: KeyboardEvent) => void
+    children?: React.ReactNode
+  }
+>(function ArrowDown({then, children}, ref) {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -112,7 +118,8 @@ function ArrowDown({
       }
     }
 
-    const container = containerRef.current
+    const container =
+      (ref && typeof ref !== 'function' && ref.current) || containerRef.current
     if (container) {
       container.addEventListener('keydown', handleArrowDown)
     }
@@ -122,18 +129,20 @@ function ArrowDown({
         container.removeEventListener('keydown', handleArrowDown)
       }
     }
-  }, [then])
+  }, [then, ref])
+
+  if (ref && typeof ref !== 'function' && ref.current) return <>{children}</>
 
   return <div ref={containerRef}>{children}</div>
-}
+})
 
-function ArrowUp({
-  then,
-  children,
-}: {
-  then?: (e: KeyboardEvent) => void
-  children?: React.ReactNode
-}) {
+const ArrowUp = forwardRef<
+  HTMLElement,
+  {
+    then?: (e: KeyboardEvent) => void
+    children?: React.ReactNode
+  }
+>(function ArrowUp({then, children}, ref) {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -143,7 +152,8 @@ function ArrowUp({
       }
     }
 
-    const container = containerRef.current
+    const container =
+      (ref && typeof ref !== 'function' && ref.current) || containerRef.current
     if (container) {
       container.addEventListener('keydown', handleArrowUp)
     }
@@ -153,18 +163,20 @@ function ArrowUp({
         container.removeEventListener('keydown', handleArrowUp)
       }
     }
-  }, [then])
+  }, [then, ref])
+
+  if (ref && typeof ref !== 'function' && ref.current) return <>{children}</>
 
   return <div ref={containerRef}>{children}</div>
-}
+})
 
-function Tab({
-  then,
-  children,
-}: {
-  then?: (e: KeyboardEvent) => void
-  children?: React.ReactNode
-}) {
+const Tab = forwardRef<
+  HTMLElement,
+  {
+    then?: (e: KeyboardEvent) => void
+    children?: React.ReactNode
+  }
+>(function Tab({then, children}, ref) {
   const containerRef = useRef<HTMLDivElement>(null)
 
   useEffect(() => {
@@ -174,7 +186,8 @@ function Tab({
       }
     }
 
-    const container = containerRef.current
+    const container =
+      (ref && typeof ref !== 'function' && ref.current) || containerRef.current
     if (container) {
       container.addEventListener('keydown', handleTab)
     }
@@ -184,10 +197,12 @@ function Tab({
         container.removeEventListener('keydown', handleTab)
       }
     }
-  }, [then])
+  }, [then, ref])
+
+  if (ref && typeof ref !== 'function' && ref.current) return <>{children}</>
 
   return <div ref={containerRef}>{children}</div>
-}
+})
 
 const Keyboard = {Escape, ArrowDown, ArrowUp, Tab, Enter, Space}
 
