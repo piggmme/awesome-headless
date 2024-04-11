@@ -52,6 +52,7 @@ function DialogButton<T extends ElementType = typeof buttonEl>({
         onClick?.(e)
         if (closed) dialog?.close()
       }}
+      tabIndex={0}
       {...props}
     >
       {children}
