@@ -82,7 +82,7 @@ function DialogMain<T extends ElementType = typeof divEl>(
   if (!context.isOpen) return null
 
   return createPortal(
-    <Keyboard.Escape then={context.close}>
+    <Keyboard.Escape ref={ref} then={context.close}>
       <AccessWithTab ref={ref}>
         <DialogContext.Provider value={context}>
           <Component {...props} ref={ref} tabIndex={-1}>
